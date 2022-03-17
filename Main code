@@ -1,0 +1,101 @@
+const infoArray = [
+
+];
+
+var operation = "";
+var newInput = "";
+// Get process.stdin as the standard input object.
+var standard_input = process.stdin;
+// Set input character encoding.
+standard_input.setEncoding('utf-8');
+// Prompt user to input data in console.
+console.log("Main commmands are:\nCreate\nRead\nUpdate (Confirmation Key required---Proceed)\nDelete\nRun STOP to restore default settings");
+// When user input data and click enter key.
+standard_input.on('data', function (data) {
+    // User input exit.
+    if(data === 'Exit\n'){
+//exit program
+        console.log("User input complete, program exit.");
+        process.exit();
+
+    }else if (data=="\n"){
+// Error for pressing Enter without proper input
+        console.log("ERROR_Enter_Incorrect_format")
+
+    }else if (data=="STOP\n"){
+// Stop the ongoing operation, restores defaults, does not touch the array
+        operation = ""
+        newInput = ""
+        console.log("default restored")
+
+    }else if (data == "Create\n"){
+// function for adding an item to array
+
+        operation = "create"
+
+    }else if (data == "Read\n"){
+// Outputs the array        
+        console.log("########################################\n")
+        console.log(infoArray.join("\n"))
+        console.log("\n########################################")
+
+    }else if (data == "Update\n"){
+// Starts the process for updating an item in the array
+        console.log("Please put in the Updated version of the item.")
+        operation = "update"
+    
+    }else if (data == "Proceed\n"){
+// Confirmation for the update
+        console.log("Please put in the the Indext number of the item that you wish to be updated.")
+        operation = "proceed"
+
+    }else if (data == "Delete\n"){
+// Remove an item from the array
+        console.log("Please put in the Index number of the item that you wish to delete")
+        operation = "delete"
+
+    }else if(operation == "create"){
+// Adds the item to the array.
+        infoArray.push(data.replace("\n",""))
+        operation = ""
+
+    }else if(operation == "update"){
+// New item that will replay the exisint input in the arrray
+        console.log("will change this to: ", data, "\nIf that is correct please put in the confirmation key.")
+        newInput = data
+        operation = ""
+
+    }else if(operation == "delete"){
+// Deletes an item from the array that is specified by the Index number
+        infoArray.splice(data,1)
+        operation = ""
+
+    }else if(operation == "proceed"){
+// Using Index number, select the location of the item that is going to be replaced
+        infoArray.splice(data,1,newInput)
+        console.log("Updating...\n")
+        operation = ""
+        newInput = ""
+
+    }else if (data == "Sort\n"){
+// Sorting in alphabetical order   
+        infoArray.sort();
+
+    }else if (data == "Sort-\n"){
+// Sorting in revers alphabetical order
+        infoArray.sort();
+        infoArray.reverse();
+    
+    }else if (data == "Search\n"){
+// Search option which return the Indext number of an matching item from array, if nothing is found returns -1
+        operation = "Search";
+
+    }else if (operation == "Search"){
+//Specify what item's Index number you are looking for.
+        console.log(infoArray.indexOf(data.replace("\n","")))
+        operation = "";
+
+    }else
+        console.log('non-existant command : ' + data);
+});
+// sorting, remove \n in array, search by name(return by index), improve read,
